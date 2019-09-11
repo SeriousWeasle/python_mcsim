@@ -34,11 +34,19 @@ class population:
             self.size = self.size - amount
             return {"killed": amount, "remaining": self.size}
 
+class pen_base:
+    def __init__(self, width, length, cramming):
+        self.width = width
+        self.length = length
+        self.area = width*length
+        self.maxEntities = self.area*cramming
+
 class animalhandler:
-    def __init__(self, creature, lootpool, start_size):
+    def __init__(self, creature, lootpool, start_size, gamerules, pen, pen_width, pen_length):
         self.creature = creature
         self.lootpool = lootpool(creature.setup_lootpool())
         self.population = population(start_size)
+        self.pen = pen(pen_width, pen_length, gamerules["entityCramming"])
     
     def kill(self, amount, isPlayerKill, lootingLevel):
         kill_amount = self.population.kill(amount)["killed"]
@@ -49,3 +57,5 @@ class animalhandler:
         newcreatures = self.population.breed()
         for c in range(newcreatures):
             self.lootpool.addloot(self.creature.breed())
+        if self.population.size > self.pen.maxEntities:
+            self.kill(self.population.size - self.pen.maxEntities, False, 0)

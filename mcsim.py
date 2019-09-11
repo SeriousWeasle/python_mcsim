@@ -8,17 +8,13 @@ import random
 import minecraft.animals as animals
 import minecraft.base as base
 
-cowHandler = base.animalhandler(animals.cow_base, base.lootpool, 2)
-pigHandler = base.animalhandler(animals.pig_base, base.lootpool, 2)
+gamerules = {
+    'entityCramming': 32
+}
 
-for i in range(30):
+cowHandler = base.animalhandler(animals.cow_base, base.lootpool, 2, gamerules, base.pen_base, 6, 5)
+
+for i in range(20):
     cowHandler.breed()
-    cowHandler.kill(math.floor(cowHandler.population.size*0.10), True, 0)
-    pigHandler.breed()
-    pigHandler.kill(math.floor(pigHandler.population.size*0.10), True, 0)
-
-print(cowHandler.population.size)
-print(cowHandler.lootpool.returnloot())
-
-print(pigHandler.population.size)
-print(pigHandler.lootpool.returnloot())
+    cowHandler.kill(math.floor(cowHandler.population.size*0.1), True, 0)
+    print(cowHandler.lootpool.returnloot())
