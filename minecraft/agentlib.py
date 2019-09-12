@@ -1,4 +1,5 @@
 import random
+import operator
 
 class agent_test:
     def __init__(self, identifier):
@@ -66,6 +67,7 @@ class agent_handler:
         self.fitnesses = {}
 
     def doIter(self, num):
+        unsorted_fitnesses = {}
         for a in self.agents:
             ch = self.creaturehandlers[a]
             actions = self.agents[a].in_to_out(self.creaturehandlers[a].population.size, num)
@@ -75,4 +77,5 @@ class agent_handler:
                 self.creaturehandlers[a].kill(actions[1], True, 0)
             amountedloot = self.creaturehandlers[a].lootpool.returnloot()
             fitness = self.creaturehandlers[a].population.size + num*0.3 + amountedloot["leather"]*0.2 + amountedloot["beef"]*0.15 + amountedloot["experience"] * 0.25
-            self.fitnesses[a] = round(fitness,3)
+            unsorted_fitnesses[a] = round(fitness, 1)
+        self.fitnesses = sorted(unsorted_fitnesses.items(), key=operator.itemgetter(1))

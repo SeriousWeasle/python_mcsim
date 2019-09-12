@@ -53,6 +53,7 @@ for i in range(100):
 
 agenthandler = agentlib.agent_handler(agents, chandlers)
 
-agenthandler.doIter(1)
+for i in range(10):
+    agenthandler.doIter(i)
 
 print(agenthandler.fitnesses)
