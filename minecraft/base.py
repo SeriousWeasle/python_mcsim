@@ -49,11 +49,25 @@ class animalhandler:
         self.pen = pen(pen_width, pen_length, gamerules["entityCramming"])
         self.playerkills = 0
         self.envdeaths = 0
+        self.totaldeaths = {
+            "player": 0,
+            "environment": 0
+        }
         self.breeded = 0
     
+    def killPercent(self, percentage, isPlayerKill, lootingLevel):
+        percentage = percentage/100
+        amount = math.floor(self.population.size*percentage)
+        kill_amount = self.population.kill(amount)["killed"]
+        self.playerkills = kill_amount
+        self.totaldeaths["player"] = self.totaldeaths["player"] + kill_amount
+        for kill in range(kill_amount):
+            self.lootpool.addloot(self.creature.kill(isPlayerKill, lootingLevel))
+
     def kill(self, amount, isPlayerKill, lootingLevel):
         kill_amount = self.population.kill(amount)["killed"]
         self.playerkills = kill_amount
+        self.totaldeaths["player"] = self.totaldeaths["player"] + kill_amount
         for kill in range(kill_amount):
             self.lootpool.addloot(self.creature.kill(isPlayerKill, lootingLevel))
     
@@ -64,4 +78,5 @@ class animalhandler:
             self.lootpool.addloot(self.creature.breed())
         if self.population.size > self.pen.maxEntities:
             self.envdeaths = self.population.size - self.pen.maxEntities
+            self.totaldeaths["environment"] = self.totaldeaths["environment"] + self.population.size - self.pen.maxEntities
             self.kill(self.population.size - self.pen.maxEntities, False, 0)
