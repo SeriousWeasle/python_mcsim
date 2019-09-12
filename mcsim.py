@@ -8,13 +8,25 @@ import random
 import minecraft.animals as animals
 import minecraft.base as base
 
+writeToFile = True
+fileName = "outfile_20percent"
+
 gamerules = {
     'entityCramming': 32
 }
 
 cowHandler = base.animalhandler(animals.cow_base, base.lootpool, 2, gamerules, base.pen_base, 6, 5)
 
-for i in range(20):
+if writeToFile == True:
+    outfile = open('./' + fileName + '.txt', '+w')
+    outfile.write("iteration,popsize,leather,beef,experience,playerkills,envdeaths\n")
+
+
+for i in range(50):
     cowHandler.breed()
-    cowHandler.kill(math.floor(cowHandler.population.size*0.1), True, 0)
-    print(cowHandler.lootpool.returnloot())
+    cowHandler.kill(math.floor(cowHandler.population.size*0.2), True, 3)
+    if writeToFile == True:
+        lootpool = cowHandler.lootpool.returnloot()
+        outfile.write(str(i) + ',' + str(cowHandler.population.size) + ',' + str(lootpool["leather"]) + ',' + str(lootpool["beef"]) + ',' + str(lootpool["experience"]) + ',' + str(cowHandler.playerkills) + ',' + str(cowHandler.envdeaths) + '\n')
+
+outfile.close()

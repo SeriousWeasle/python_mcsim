@@ -47,15 +47,21 @@ class animalhandler:
         self.lootpool = lootpool(creature.setup_lootpool())
         self.population = population(start_size)
         self.pen = pen(pen_width, pen_length, gamerules["entityCramming"])
+        self.playerkills = 0
+        self.envdeaths = 0
+        self.breeded = 0
     
     def kill(self, amount, isPlayerKill, lootingLevel):
         kill_amount = self.population.kill(amount)["killed"]
+        self.playerkills = kill_amount
         for kill in range(kill_amount):
             self.lootpool.addloot(self.creature.kill(isPlayerKill, lootingLevel))
     
     def breed(self):
         newcreatures = self.population.breed()
+        self.breeded = self.breeded + newcreatures
         for c in range(newcreatures):
             self.lootpool.addloot(self.creature.breed())
         if self.population.size > self.pen.maxEntities:
+            self.envdeaths = self.population.size - self.pen.maxEntities
             self.kill(self.population.size - self.pen.maxEntities, False, 0)
