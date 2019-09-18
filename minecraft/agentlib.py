@@ -60,6 +60,28 @@ class agent_test:
             o1 = False
         return [o1, o2]
 
+    def mutate(self):
+        #inputs to nodes
+        self.i1_to_n1 = (self.i1_to_n1 + random.random())/2
+        self.i1_to_n2 = (self.i1_to_n2 + random.random())/2
+        self.i1_to_n3 = (self.i1_to_n3 + random.random())/2
+        self.i2_to_n1 = (self.i2_to_n1 + random.random())/2
+        self.i2_to_n2 = (self.i2_to_n2 + random.random())/2
+        self.i2_to_n3 = (self.i2_to_n3 + random.random())/2
+
+        #nodes to outputs
+        self.n1_to_o1 = (self.n1_to_o1 + random.random())/2
+        self.n1_to_o2 = (self.n1_to_o2 + random.random())/2
+        self.n2_to_o1 = (self.n2_to_o1 + random.random())/2
+        self.n2_to_o2 = (self.n2_to_o2 + random.random())/2
+        self.n3_to_o1 = (self.n3_to_o1 + random.random())/2
+        self.n3_to_o2 = (self.n3_to_o2 + random.random())/2
+
+        #output factors
+        self.killmult = (self.killmult + random.random())/2
+        self.breedthreshold = (self.breedthreshold + random.randint(0,1000))/2
+
+
 class agent_handler:
     def __init__(self, agents, creaturehandlers):
         self.agents = agents
@@ -79,3 +101,17 @@ class agent_handler:
             fitness = self.creaturehandlers[a].population.size + num*0.3 + amountedloot["leather"]*0.2 + amountedloot["beef"]*0.15 + amountedloot["experience"] * 0.25
             unsorted_fitnesses[a] = round(fitness, 1)
         self.fitnesses = sorted(unsorted_fitnesses.items(), key=operator.itemgetter(1))
+    
+    def doGeneration(self, removepercent):
+        rmfactor = removepercent/100
+        toRemove = round(int(len(self.agents)*rmfactor))
+        tr_agents = []
+        for a in range(toRemove):
+            tr_agents.append(self.fitnesses[a][0])
+        
+        new_agents = {}
+        keep_agents = {}
+        # for a in self.agents:
+        #     if a in tr_agents:
+        #         new_agents.append()
+        return(tr_agents)

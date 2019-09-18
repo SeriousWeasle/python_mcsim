@@ -80,3 +80,4 @@ class animalhandler:
             self.envdeaths = self.population.size - self.pen.maxEntities
             self.totaldeaths["environment"] = self.totaldeaths["environment"] + self.population.size - self.pen.maxEntities
             self.kill(self.population.size - self.pen.maxEntities, False, 0)
+            
